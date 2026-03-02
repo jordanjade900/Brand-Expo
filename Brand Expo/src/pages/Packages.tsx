@@ -315,7 +315,7 @@ export default function Packages() {
                     <div className="mb-6 flex flex-col items-start">
                       <div className="flex items-baseline space-x-3">
                         <span className="text-5xl font-black text-white">
-                          {isDiscountActive ? "$10,000" : "$15,000"}
+                          {isDiscountActive ? "$12,000" : "$15,000"}
                         </span>
                         <span className="text-gray-400 text-lg">JMD</span>
                       </div>
