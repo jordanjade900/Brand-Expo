@@ -11,11 +11,38 @@ const BACKGROUND_IMAGES = [
 
 export default function Home() {
   const [bgIndex, setBgIndex] = useState(0);
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
 
   useEffect(() => {
+    const targetDate = new Date("2026-03-19T11:00:00").getTime();
+
+    const calculateTimeLeft = () => {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance < 0) {
+        return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      }
+
+      return {
+        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((distance % (1000 * 60)) / 1000)
+      };
+    };
+
+    setTimeLeft(calculateTimeLeft());
+
     const timer = setInterval(() => {
       setBgIndex((prev) => (prev + 1) % BACKGROUND_IMAGES.length);
-    }, 5000);
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -88,6 +115,33 @@ export default function Home() {
               </p>
             </div>
           </motion.div>
+        </motion.div>
+
+        {/* Countdown Timer */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="grid grid-cols-4 gap-3 md:gap-6 mb-12 w-full max-w-2xl"
+        >
+          {[
+            { label: "Days", value: timeLeft.days },
+            { label: "Hours", value: timeLeft.hours },
+            { label: "Minutes", value: timeLeft.minutes },
+            { label: "Seconds", value: timeLeft.seconds },
+          ].map((item) => (
+            <div key={item.label} className="flex flex-col items-center">
+              <div className="relative w-full aspect-square flex items-center justify-center bg-[#020817]/60 backdrop-blur-xl border border-cyan-500/20 rounded-2xl md:rounded-3xl shadow-[0_0_20px_rgba(6,182,212,0.1)] group hover:border-cyan-400/50 transition-colors">
+                <div className="absolute inset-0 bg-cyan-500/5 rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="text-2xl md:text-5xl font-black text-white tracking-tighter relative z-10">
+                  {String(item.value).padStart(2, '0')}
+                </span>
+              </div>
+              <span className="mt-3 text-[8px] md:text-xs font-bold text-cyan-400 uppercase tracking-[0.2em]">
+                {item.label}
+              </span>
+            </div>
+          ))}
         </motion.div>
 
         {/* Event Details */}
