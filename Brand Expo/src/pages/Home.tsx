@@ -184,7 +184,7 @@ export default function Home() {
                   <MapPin className="w-8 h-8" />
                 </div>
                 <div className="flex flex-col justify-center text-left">
-                  <span className="text-lg font-bold text-white tracking-wide leading-tight uppercase">UTech, Ja.<br/>Front Field</span>
+                  <span className="text-lg font-bold text-white tracking-wide leading-tight uppercase">UTech, Ja.<br/>Front Lawn</span>
                 </div>
               </div>
             </div>
